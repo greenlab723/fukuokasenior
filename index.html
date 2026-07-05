@@ -3,28 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-  <title>第10回福岡シニアOGT2026</title>
+  <title>スマホ対応スプレッドシート</title>
   
   <style>
-    /* 余白をなくし、画面いっぱいに広げる設定 */
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       background-color: #ffffff;
-      overflow: hidden; /* 外側のスクロールを消す */
+      /* 以前あった overflow: hidden; を削除し、画面全体のスクロールを邪魔しないようにしました */
     }
     
-    /* 埋め込み枠の設定 */
     .iframe-wrapper {
       width: 100%;
-      height: 100%;
-      -webkit-overflow-scrolling: touch; /* スマホでのスクロールを滑らかにする */
+      height: 100vh; /* 縦幅をスマホの画面ピッタリに合わせる */
+      overflow: auto; /* ここが超重要！はみ出た分をスクロールできるようにする */
+      -webkit-overflow-scrolling: touch; /* 指でのスクロールを滑らかにする */
     }
     
     iframe {
-      width: 100%;
+      /* ↓右側が切れるバグを防ぐための魔法の2行（スマホに幅を誤認させない） */
+      min-width: 100%;
+      width: 1px; 
+      
       height: 100%;
       border: none;
       display: block;
@@ -34,7 +36,7 @@
 <body>
 
   <div class="iframe-wrapper">
-    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTapJUbg7IaZ4N3rTSSphU4ifws3sjHUJnEVRruqs3-iP5Bse6aJe3ZGeQw8QlkgDTncxuAn80PU2XX/pubhtml?gid=703030742&single=true&chrome=false&widget=false"></iframe>
+    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTapJUbg7IaZ4N3rTSSphU4ifws3sjHUJnEVRruqs3-iP5Bse6aJe3ZGeQw8QlkgDTncxuAn80PU2XX/pubhtml?gid=703030742&single=true&chrome=false&widget=false" scrolling="yes"></iframe>
   </div>
 
 </body>
