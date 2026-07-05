@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第10回福岡シニアOGT2026</title>
   
   <style>
@@ -12,22 +12,30 @@
       width: 100%;
       height: 100%;
       background-color: #ffffff;
-      /* 以前あった overflow: hidden; を削除し、画面全体のスクロールを邪魔しないようにしました */
+      overflow: hidden; /* 画面全体の無駄なスクロールを消す */
     }
     
     .iframe-wrapper {
+      position: relative;
       width: 100%;
-      height: 100vh; /* 縦幅をスマホの画面ピッタリに合わせる */
-      overflow: auto; /* ここが超重要！はみ出た分をスクロールできるようにする */
-      -webkit-overflow-scrolling: touch; /* 指でのスクロールを滑らかにする */
+      height: 100vh;
     }
     
     iframe {
-      /* ↓右側が切れるバグを防ぐための魔法の2行（スマホに幅を誤認させない） */
-      min-width: 100%;
-      width: 1px; 
+      position: absolute;
+      top: 0;
+      left: 0;
       
-      height: 100%;
+      /* ↓魔法の調整ゾーン：あえて枠を巨大化させて、縮小して収める */
+      /* 表が横に長い場合は、ここの width の % を大きくしてください */
+      width: 250%; 
+      height: 250%;
+      
+      /* 上で巨大化させた枠を、ギュッと縮小します（250%なら0.4で元に戻る計算） */
+      /* ちょうどいいフィット感になるように、0.3〜0.5くらいの間で調整してください */
+      transform: scale(0.4); 
+      transform-origin: top left; /* 左上を基準に縮小する */
+      
       border: none;
       display: block;
     }
@@ -36,7 +44,7 @@
 <body>
 
   <div class="iframe-wrapper">
-    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTapJUbg7IaZ4N3rTSSphU4ifws3sjHUJnEVRruqs3-iP5Bse6aJe3ZGeQw8QlkgDTncxuAn80PU2XX/pubhtml?gid=703030742&single=true&chrome=false&widget=false" scrolling="yes"></iframe>
+    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTapJUbg7IaZ4N3rTSSphU4ifws3sjHUJnEVRruqs3-iP5Bse6aJe3ZGeQw8QlkgDTncxuAn80PU2XX/pubhtml?gid=703030742&single=true&chrome=false&widget=false" scrolling="no"></iframe>
   </div>
 
 </body>
