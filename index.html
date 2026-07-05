@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スマホ対応スプレッドシート</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  
+  <style>
+    /* スマホで見やすいようにデザインを調整 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f3f5f7;
+      color: #333;
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto; /* はみ出た分を横スクロール可能にする */
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 600px; /* PCなど画面が広い場合は広げる */
+      font-size: 14px;
+      white-space: nowrap; /* 勝手に改行されるのを防ぐ */
+    }
+    th, td {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 14px;
+      text-align: left;
+    }
+    th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="table-container">
+    <table id="myTable">
+      <tr><td style="padding:20px; text-align:center;">データを読み込み中です...</td></tr>
+    </table>
+  </div>
+
+  <script>
+    // ご提示いただいたURLを「CSV出力用」に変換したものです
+    // （pubhtml を pub に変えて、末尾に &output=csv を追加しています）
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTapJUbg7IaZ4N3rTSSphU4ifws3sjHUJnEVRruqs3-iP5Bse6aJe3ZGeQw8QlkgDTncxuAn80PU2XX/pub?gid=703030742&single=true&output=csv";
+
+    // CSVデータを取得してHTMLの表に変換
+    Papa.parse(csvUrl, {
+      download: true,
+      complete: function(results) {
+        const data = results.data;
+        let html = "";
+        
+        data.forEach((row, index) => {
+          // 空の行はスキップ
+          if (row.length === 1 && row[0] === "") return; 
+
+          html += "<tr>";
+          row.forEach(cell => {
+            // セル内の改行をHTMLの改行タグに変換
+            const formattedCell = cell.replace(/\n/g, "<br>");
+            
+            if (index === 0) {
+              html += `<th>${formattedCell}</th>`; // 1行目は見出し
+            } else {
+              html += `<td>${formattedCell}</td>`; // 2行目以降はデータ
+            }
+          });
+          html += "</tr>";
+        });
+        
+        document.getElementById("myTable").innerHTML = html;
+      }
+    });
+  </script>
+
+</body>
+</html>
